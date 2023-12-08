@@ -1,4 +1,6 @@
 import CollectionButton from "@/components/AnimeList/CollectionButton";
+import CommentBox from "@/components/AnimeList/CommentBox";
+import CommentInput from "@/components/AnimeList/CommentInput";
 import VideoPlayer from "@/components/Utilities/VideoPlayer";
 import { getAnimeResponse } from "@/libs/api-libs";
 import { authUserSession } from "@/libs/auth-libs";
@@ -20,7 +22,7 @@ const Page = async ({ params: {id} }) => {
       <div className="pt-4 px-4">
         <h3 className="text-2xl text-color-primary">{anime.data.title} - {anime.data.year}</h3>
         {
-          !collection && user && <CollectionButton anime_mal_id={id} user_email={user?.email} />
+          !collection && user && <CollectionButton anime_mal_id={id} user_email={user?.email} anime_image={anime.data.images.webp.image_url} anime_title={anime.data.title} />
         }
       </div>
       <div className="pt-4 px-4 flex gap-2 text-color-primary overflow-x-auto">
@@ -44,6 +46,11 @@ const Page = async ({ params: {id} }) => {
       <div className="pt-4 px-4 flex sm:flex-nowrap flex-wrap gap-2 text-color-primary">
         <Image src={anime.data.images.webp.image_url} alt={anime.data.images.webp.image_url} width={250} height={250} className="w-full rounded object-cover" />
         <p className="text-justify text-xl">{anime.data.synopsis}</p>
+      </div>
+      <div className="p-4">
+        <h3 className="text-color-primary text-2xl mb-2">Komentar Penonton</h3>
+        <CommentBox anime_mal_id={id} />
+        {user && <CommentInput anime_mal_id={id} user_email={user?.email} username={user?.name} anime_title={anime.data.title} />}
       </div>
       <div>
         <VideoPlayer youtubeId={anime.data.trailer.youtube_id} />
